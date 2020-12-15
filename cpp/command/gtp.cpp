@@ -1614,6 +1614,8 @@ int MainCmds::gtp(int argc, const char* const* argv) {
   ConfigParser cfg;
   string nnModelFile;
   string overrideVersion;
+
+  TieZiBoard tieziBoard;
  
   try {
     KataGoCommandLine cmd("Run KataGo main GTP engine for playing games or casual analysis.");
@@ -1752,6 +1754,24 @@ int MainCmds::gtp(int argc, const char* const* argv) {
     perspective,analysisPVLen
   );
   engine->setOrResetBoardSize(cfg,logger,seedRand,defaultBoardXSize,defaultBoardYSize);
+
+  // 加载铁子定义文件
+  try {
+    if (cfg.contains("tieziRulesFile")){
+      tieziBoard = TieZiBoard::loadFile(defaultBoardXSize != -1 ? defaultBoardXSize : Board::MAX_LEN, defaultBoardYSize != -1 ? defaultBoardYSize : Board::MAX_LEN, cfg.getString("tieziRulesFile"));
+      logger.write("铁子定义文件已加载:" + cfg.getString("tieziRulesFile"));
+      cout << "铁子定义文件已加载:" + cfg.getString("tieziRulesFile") << endl;
+      TieZiBoard::printBoard(cout, tieziBoard);
+    }
+    else {
+      logger.write("未找到铁子定义文件, 跳过");
+      cout << "未找到铁子定义文件, 跳过" << endl;
+    }
+  }
+  catch (IOError &e) {
+    logger.write("加载铁子定义文件时出现错误\n" + e.message);
+    cout << "加载铁子定义文件时出现错误" << e.message << endl;
+  }
 
   //If nobody specified any time limit in any way, then assume a relatively fast time control
   if(!cfg.contains("maxPlayouts") && !cfg.contains("maxVisits") && !cfg.contains("maxTime")) {

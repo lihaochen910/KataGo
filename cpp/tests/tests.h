@@ -7,6 +7,7 @@
 #include "../core/rand.h"
 #include "../core/test.h"
 #include "../game/board.h"
+#include "../game/tieziboard.h"
 #include "../game/rules.h"
 #include "../game/boardhistory.h"
 
@@ -57,6 +58,9 @@ namespace Tests {
 
   //testownership.cpp
   void runOwnershipTests(const std::string& configFile, const std::string& modelFile);
+
+  //testtieziboardbasic.cpp
+  void runTieZiBoardBasicTests();
 }
 
 namespace TestCommon {

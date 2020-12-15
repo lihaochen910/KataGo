@@ -262,3 +262,8 @@ int MainCmds::runownershiptests(int argc, const char* const* argv) {
   ScoreValue::freeTables();
   return 0;
 }
+
+int MainCmds::runtieziboardtests(int argc, const char* const* argv) {
+  Tests::runTieZiBoardBasicTests();
+  return 0;
+}

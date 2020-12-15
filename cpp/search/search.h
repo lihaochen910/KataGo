@@ -9,6 +9,7 @@
 #include "../core/multithread.h"
 #include "../game/board.h"
 #include "../game/boardhistory.h"
+#include "../game/tieziboard.h"
 #include "../game/rules.h"
 #include "../neuralnet/nneval.h"
 #include "../search/analysisdata.h"
@@ -151,6 +152,7 @@ struct Search {
   Player rootPla;
   Board rootBoard;
   BoardHistory rootHistory;
+  TieZiBoard rootTieZiBoard;
   Loc rootHintLoc;
 
   //External user-specified moves that are illegal or that should be nontrivially searched, and the number of turns for which they should
@@ -233,6 +235,7 @@ struct Search {
   void setParams(SearchParams params);
   void setParamsNoClearing(SearchParams params); //Does not clear search
   void setNNEval(NNEvaluator* nnEval);
+  void setTieZiBoard(const TieZiBoard& board);
 
   //Just directly clear search without changing anything
   void clearSearch();

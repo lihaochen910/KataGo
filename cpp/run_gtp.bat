@@ -1,0 +1,1 @@
+katago.exe gtp -model 'weights/kata20bs530.bin.gz' -config 'gtp.cfg'

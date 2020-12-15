@@ -143,7 +143,7 @@ static const double VALUE_WEIGHT_DEGREES_OF_FREEDOM = 3.0;
 
 Search::Search(SearchParams params, NNEvaluator* nnEval, const string& rSeed)
   :rootPla(P_BLACK),
-   rootBoard(),rootHistory(),rootHintLoc(Board::NULL_LOC),
+   rootBoard(),rootHistory(), rootTieZiBoard(),rootHintLoc(Board::NULL_LOC),
    avoidMoveUntilByLocBlack(),avoidMoveUntilByLocWhite(),
    rootSafeArea(NULL),
    recentScoreCenter(0.0),
@@ -320,6 +320,11 @@ void Search::setNNEval(NNEvaluator* nnEval) {
   assert(nnXLen > 0 && nnXLen <= NNPos::MAX_BOARD_LEN);
   assert(nnYLen > 0 && nnYLen <= NNPos::MAX_BOARD_LEN);
   policySize = NNPos::getPolicySize(nnXLen,nnYLen);
+}
+
+void Search::setTieZiBoard(const TieZiBoard& board) {
+  clearSearch();
+  rootTieZiBoard = board;
 }
 
 void Search::clearSearch() {
@@ -1123,6 +1128,18 @@ void Search::maybeAddPolicyNoiseAndTempAlreadyLocked(SearchThread& thread, Searc
 bool Search::isAllowedRootMove(Loc moveLoc) const {
   assert(moveLoc == Board::PASS_LOC || rootBoard.isOnBoard(moveLoc));
 
+  //TODO: check it works.
+  //添加的规则: 铁子
+  if (rootTieZiBoard.getRuleOfLocation(moveLoc) != TZ_NONE)
+  {
+    if (rootTieZiBoard.getRuleOfLocation(moveLoc) == TZ_ANY)
+      return false;
+    if (rootPla == P_BLACK && !rootTieZiBoard.canPlaceBlack(moveLoc))
+      return false;
+    if (rootPla == P_WHITE && !rootTieZiBoard.canPlaceWhite(moveLoc))
+      return false;
+  }
+  
   //A bad situation that can happen that unnecessarily prolongs training games is where one player
   //repeatedly passes and the other side repeatedly fills the opponent's space and/or suicides over and over.
   //To mitigate some of this and save computation, we make it so that at the root, if the last four moves by the opponent

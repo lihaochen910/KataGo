@@ -236,6 +236,7 @@ add_executable(katago
   game/board.cpp
   game/rules.cpp
   game/boardhistory.cpp
+  game/tieziboard.cpp
   dataio/sgf.cpp
   dataio/numpywrite.cpp
   dataio/trainingwrite.cpp
@@ -265,6 +266,7 @@ add_executable(katago
   ${GIT_HEADER_FILE_ALWAYS_UPDATED}
   tests/testboardarea.cpp
   tests/testboardbasic.cpp
+  tests/testtieziboardbasic.cpp
   tests/testcommon.cpp
   tests/testrules.cpp
   tests/testscore.cpp
