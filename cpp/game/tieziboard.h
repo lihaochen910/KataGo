@@ -43,10 +43,13 @@ struct TieZiBoard {
   // 指定位置可以放置白子??
   bool canPlaceWhite(Loc loc) const;
 
+  void copyFrom(TieZiBoard& other);
+
   static TieZiBoard loadFile(int xSize, int ySize, const std::string& file);
   static TieZiBoard parseBoard(int xSize, int ySize, const std::string& s);
   static TieZiBoard parseBoard(int xSize, int ySize, const std::string& s, char lineDelimiter);
   static void printBoard(std::ostream& out, const TieZiBoard& board);
+  static std::string toStringSimple(const TieZiBoard& board, char lineDelimiter);
   static char ruleToChar(TieZiRule rule);
 
   // Data--------------------------------------------

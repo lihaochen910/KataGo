@@ -20,6 +20,13 @@ TieZiBoard::TieZiBoard(int x, int y)
   init(x,y);
 }
 
+TieZiBoard::TieZiBoard(const TieZiBoard& other) {
+  x_size = other.x_size;
+  y_size = other.y_size;
+
+  memcpy(rules, other.rules, sizeof(TieZiRule) * Board::MAX_ARR_SIZE);
+}
+
 void TieZiBoard::init(int xS, int yS)
 {
   if(xS < 0 || yS < 0 || xS > Board::MAX_LEN || yS > Board::MAX_LEN)
@@ -73,6 +80,16 @@ bool TieZiBoard::canPlaceWhite(Loc loc) const
   if(loc < 0 || loc >= Board::MAX_ARR_SIZE)
     return false;
   return rules[loc] != TZ_WHITE && rules[loc] != TZ_ANY;
+}
+
+void TieZiBoard::copyFrom(TieZiBoard& other) {
+  init(other.x_size, other.y_size);
+  for(int y = 0; y < other.y_size; y++) {
+    for(int x = 0; x < other.x_size; x++) {
+      Loc loc = Location::getLoc(x, y, other.x_size);
+      rules[loc] = other.rules[loc];
+    }
+  }
 }
 
 TieZiBoard TieZiBoard::loadFile(int xSize, int ySize, const string& file)
@@ -139,6 +156,18 @@ void TieZiBoard::printBoard(ostream& out, const TieZiBoard& board) {
     }
     out << endl;
   }
+}
+
+std::string TieZiBoard::toStringSimple(const TieZiBoard& board, char lineDelimiter) {
+  string s;
+  for(int y = 0; y < board.y_size; y++) {
+    for(int x = 0; x < board.x_size; x++) {
+      Loc loc = Location::getLoc(x, y, board.x_size);
+      s += TieZiBoard::ruleToChar(board.rules[loc]);
+    }
+    s += "\n";
+  }
+  return s;
 }
 
 char TieZiBoard::ruleToChar(TieZiRule rule){

@@ -63,6 +63,9 @@ Search* AsyncBot::getSearchStopAndWait() {
 const Search* AsyncBot::getSearch() const {
   return search;
 }
+Search* AsyncBot::getSearchUnsafe() {
+  return search;
+}
 SearchParams AsyncBot::getParams() const {
   return search->searchParams;
 }

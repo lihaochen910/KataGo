@@ -1761,7 +1761,11 @@ int MainCmds::gtp(int argc, const char* const* argv) {
       tieziBoard = TieZiBoard::loadFile(defaultBoardXSize != -1 ? defaultBoardXSize : Board::MAX_LEN, defaultBoardYSize != -1 ? defaultBoardYSize : Board::MAX_LEN, cfg.getString("tieziRulesFile"));
       logger.write("铁子定义文件已加载:" + cfg.getString("tieziRulesFile"));
       cout << "铁子定义文件已加载:" + cfg.getString("tieziRulesFile") << endl;
+      logger.write(TieZiBoard::toStringSimple(tieziBoard, '\n'));
       TieZiBoard::printBoard(cout, tieziBoard);
+
+      // 应用定义到Search
+      engine->bot->getSearchUnsafe()->rootTieZiBoard.copyFrom(tieziBoard);
     }
     else {
       logger.write("未找到铁子定义文件, 跳过");

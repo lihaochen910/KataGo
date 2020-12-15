@@ -22,6 +22,7 @@ class AsyncBot {
 
   //Get the search directly. If the asyncbot is doing anything asynchronous, the search MAY STILL BE RUNNING!
   const Search* getSearch() const;
+  Search* getSearchUnsafe();
   //Get the search, after stopping and waiting to terminate any existing search
   //Note that one still should NOT mind any threading issues using this search object and other asyncBot calls at the same time.
   Search* getSearchStopAndWait();
