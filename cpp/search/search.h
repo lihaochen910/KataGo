@@ -357,6 +357,8 @@ private:
   void maybeAddPolicyNoiseAndTempAlreadyLocked(SearchThread& thread, SearchNode& node, bool isRoot) const;
 
   bool isAllowedRootMove(Loc moveLoc) const;
+  bool isTieZiBanned(Loc moveLoc) const;
+  bool isTieZiBanned(Loc moveLoc, Player movePla) const;
 
   void computeRootValues();
 

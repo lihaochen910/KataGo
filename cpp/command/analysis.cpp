@@ -399,6 +399,7 @@ int MainCmds::analysis(int argc, const char* const* argv) {
         bot->setAlwaysIncludeOwnerMap(request->includeOwnership || request->includeMovesOwnership);
         bot->setParams(request->params);
         bot->setAvoidMoveUntilByLoc(request->avoidMoveUntilByLocBlack,request->avoidMoveUntilByLocWhite);
+        bot->setAvoidMoveUntilByLocFromTieZiBoard();
 
         Player pla = request->nextPla;
         double searchFactor = 1.0;

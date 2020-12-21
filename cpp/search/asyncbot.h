@@ -35,6 +35,7 @@ class AsyncBot {
   void setKomiIfNew(float newKomi);
   void setRootHintLoc(Loc loc);
   void setAvoidMoveUntilByLoc(const std::vector<int>& bVec, const std::vector<int>& wVec);
+  void setAvoidMoveUntilByLocFromTieZiBoard();
   void setAlwaysIncludeOwnerMap(bool b);
   void setParams(SearchParams params);
   void setPlayerIfNew(Player movePla);

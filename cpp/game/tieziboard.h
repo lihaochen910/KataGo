@@ -42,8 +42,10 @@ struct TieZiBoard {
   bool canPlaceBlack(Loc loc) const;
   // 指定位置可以放置白子??
   bool canPlaceWhite(Loc loc) const;
+  bool canPlace(Loc loc, Player movePla) const;
 
   void copyFrom(TieZiBoard& other);
+  void initAvoidMoveUntilByLoc();
 
   static TieZiBoard loadFile(int xSize, int ySize, const std::string& file);
   static TieZiBoard parseBoard(int xSize, int ySize, const std::string& s);
@@ -56,6 +58,9 @@ struct TieZiBoard {
   int x_size;                  // Horizontal size of board
   int y_size;                  // Vertical size of board
   TieZiRule rules[Board::MAX_ARR_SIZE];  // TieZi type of each location on the board.
+
+  std::vector<int> avoidMoveUntilByLocBlack;
+  std::vector<int> avoidMoveUntilByLocWhite;
 
 private:
   void init(int xS, int yS);

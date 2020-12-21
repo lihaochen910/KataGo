@@ -1,0 +1,22 @@
+{
+    "tasks": [
+      {
+        "label": "build Mac Binary",
+        "type": "shell",
+        "command": "bash ./build.sh",
+        "windows": {
+          "command": ".\\build.cmd"
+        },
+        "options": {
+          "cwd": "${workspaceFolder}/cpp"
+        },
+        "group": "build",
+        "presentation": {
+          "reveal": "always",
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      }
+    ],
+    "version": "2.0.0"
+}

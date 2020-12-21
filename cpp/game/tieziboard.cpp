@@ -82,12 +82,37 @@ bool TieZiBoard::canPlaceWhite(Loc loc) const
   return rules[loc] != TZ_WHITE && rules[loc] != TZ_ANY;
 }
 
+bool TieZiBoard::canPlace(Loc loc, Player movePla) const
+{
+  if(loc < 0 || loc >= Board::MAX_ARR_SIZE)
+    return false;
+  if (movePla == P_BLACK && canPlaceBlack(loc))
+    return true;
+  if (movePla == P_WHITE && canPlaceWhite(loc))
+    return true;
+  return true; // default shouldn't happen
+}
+
 void TieZiBoard::copyFrom(TieZiBoard& other) {
   init(other.x_size, other.y_size);
   for(int y = 0; y < other.y_size; y++) {
     for(int x = 0; x < other.x_size; x++) {
       Loc loc = Location::getLoc(x, y, other.x_size);
       rules[loc] = other.rules[loc];
+    }
+  }
+}
+
+void TieZiBoard::initAvoidMoveUntilByLoc() {
+  avoidMoveUntilByLocBlack.resize(Board::MAX_ARR_SIZE);
+  avoidMoveUntilByLocWhite.resize(Board::MAX_ARR_SIZE);
+  for(int y = 0; y < y_size; y++) {
+    for(int x = 0; x < x_size; x++) {
+      Loc loc = Location::getLoc(x, y, x_size);
+      if(!canPlaceBlack(loc))
+        avoidMoveUntilByLocBlack[loc] = 0xFFFF;
+      if(!canPlaceWhite(loc))
+        avoidMoveUntilByLocWhite[loc] = 0xFFFF;
     }
   }
 }

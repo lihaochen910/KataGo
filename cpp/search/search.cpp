@@ -341,6 +341,7 @@ bool Search::isLegalTolerant(Loc moveLoc, Player movePla) const {
   if(movePla != rootPla) {
     Board copy = rootBoard;
     copy.clearSimpleKoLoc();
+    // return copy.isLegal(moveLoc,movePla,multiStoneSuicideLegal) && !isTieZiBanned(moveLoc,movePla);
     return copy.isLegal(moveLoc,movePla,multiStoneSuicideLegal);
   }
   else {
@@ -352,12 +353,14 @@ bool Search::isLegalTolerant(Loc moveLoc, Player movePla) const {
       return false;
     if(rootHistory.encorePhase <= 0 && rootBoard.isKoBanned(moveLoc))
       return false;
+    // if(isTieZiBanned(moveLoc))
+    //   return false;
     return true;
   }
 }
 
 bool Search::isLegalStrict(Loc moveLoc, Player movePla) const {
-  return movePla == rootPla && rootHistory.isLegal(rootBoard,moveLoc,movePla);
+  return movePla == rootPla && rootHistory.isLegal(rootBoard,moveLoc,movePla)/* && !isTieZiBanned(moveLoc,movePla)*/;
 }
 
 bool Search::makeMove(Loc moveLoc, Player movePla) {
@@ -1128,18 +1131,9 @@ void Search::maybeAddPolicyNoiseAndTempAlreadyLocked(SearchThread& thread, Searc
 bool Search::isAllowedRootMove(Loc moveLoc) const {
   assert(moveLoc == Board::PASS_LOC || rootBoard.isOnBoard(moveLoc));
 
-  //TODO: check it works.
-  //添加的规则: 铁子
-  if (rootTieZiBoard.getRuleOfLocation(moveLoc) != TZ_NONE)
-  {
-    if (rootTieZiBoard.getRuleOfLocation(moveLoc) == TZ_ANY)
-      return false;
-    if (rootPla == P_BLACK && !rootTieZiBoard.canPlaceBlack(moveLoc))
-      return false;
-    if (rootPla == P_WHITE && !rootTieZiBoard.canPlaceWhite(moveLoc))
-      return false;
-  }
-  
+  // if(isTieZiBanned(moveLoc))
+  //   return false;
+
   //A bad situation that can happen that unnecessarily prolongs training games is where one player
   //repeatedly passes and the other side repeatedly fills the opponent's space and/or suicides over and over.
   //To mitigate some of this and save computation, we make it so that at the root, if the last four moves by the opponent
@@ -1164,6 +1158,27 @@ bool Search::isAllowedRootMove(Loc moveLoc) const {
       return false;
   }
   return true;
+}
+
+bool Search::isTieZiBanned(Loc moveLoc) const {
+  return isTieZiBanned(moveLoc,rootPla);
+}
+
+bool Search::isTieZiBanned(Loc moveLoc, Player movePla) const {
+  // TODO: check it works.
+  // 添加的规则: 铁子
+  if (rootTieZiBoard.getRuleOfLocation(moveLoc) != TZ_NONE)
+  {
+    if (rootTieZiBoard.getRuleOfLocation(moveLoc) == TZ_ANY)
+      return true;
+    if (movePla == P_BLACK && !rootTieZiBoard.canPlaceBlack(moveLoc))
+      return true;
+    if (movePla == P_WHITE && !rootTieZiBoard.canPlaceWhite(moveLoc))
+      return true;
+    // else
+    //   return !rootTieZiBoard.canPlace(moveLoc,movePla);
+  }
+  return false;
 }
 
 void Search::getValueChildWeights(

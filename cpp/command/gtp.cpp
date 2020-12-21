@@ -1030,6 +1030,7 @@ struct GTPEngine {
 
     Loc moveLoc;
     bot->setAvoidMoveUntilByLoc(args.avoidMoveUntilByLocBlack,args.avoidMoveUntilByLocWhite);
+    bot->setAvoidMoveUntilByLocFromTieZiBoard();
     if(args.analyzing) {
       std::function<void(const Search* search)> callback = getAnalyzeCallback(pla,args);
       if(args.showOwnership)
@@ -1298,6 +1299,7 @@ struct GTPEngine {
 
     std::function<void(const Search* search)> callback = getAnalyzeCallback(pla,args);
     bot->setAvoidMoveUntilByLoc(args.avoidMoveUntilByLocBlack,args.avoidMoveUntilByLocWhite);
+    bot->setAvoidMoveUntilByLocFromTieZiBoard();
     if(args.showOwnership)
       bot->setAlwaysIncludeOwnerMap(true);
     else
@@ -1766,6 +1768,7 @@ int MainCmds::gtp(int argc, const char* const* argv) {
 
       // 应用定义到Search
       engine->bot->getSearchUnsafe()->rootTieZiBoard.copyFrom(tieziBoard);
+      engine->bot->getSearchUnsafe()->rootTieZiBoard.initAvoidMoveUntilByLoc();
     }
     else {
       logger.write("未找到铁子定义文件, 跳过");
