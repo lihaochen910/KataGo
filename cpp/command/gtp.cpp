@@ -1030,7 +1030,7 @@ struct GTPEngine {
 
     Loc moveLoc;
     bot->setAvoidMoveUntilByLoc(args.avoidMoveUntilByLocBlack,args.avoidMoveUntilByLocWhite);
-    bot->setAvoidMoveUntilByLocFromTieZiBoard();
+    // bot->setAvoidMoveUntilByLocFromTieZiBoard();
     if(args.analyzing) {
       std::function<void(const Search* search)> callback = getAnalyzeCallback(pla,args);
       if(args.showOwnership)
@@ -1299,7 +1299,7 @@ struct GTPEngine {
 
     std::function<void(const Search* search)> callback = getAnalyzeCallback(pla,args);
     bot->setAvoidMoveUntilByLoc(args.avoidMoveUntilByLocBlack,args.avoidMoveUntilByLocWhite);
-    bot->setAvoidMoveUntilByLocFromTieZiBoard();
+    // bot->setAvoidMoveUntilByLocFromTieZiBoard();
     if(args.showOwnership)
       bot->setAlwaysIncludeOwnerMap(true);
     else

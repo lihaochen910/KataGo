@@ -93,8 +93,8 @@ void AsyncBot::setAvoidMoveUntilByLoc(const std::vector<int>& bVec, const std::v
   search->setAvoidMoveUntilByLoc(bVec,wVec);
 }
 void AsyncBot::setAvoidMoveUntilByLocFromTieZiBoard() {
-  stopAndWait();
-  search->setAvoidMoveUntilByLoc(search->rootTieZiBoard.avoidMoveUntilByLocBlack,search->rootTieZiBoard.avoidMoveUntilByLocWhite);
+  // stopAndWait();
+  // search->setAvoidMoveUntilByLoc(search->rootTieZiBoard.avoidMoveUntilByLocBlack,search->rootTieZiBoard.avoidMoveUntilByLocWhite);
 }
 void AsyncBot::setRootHintLoc(Loc loc) {
   stopAndWait();

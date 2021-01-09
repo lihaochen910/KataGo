@@ -136,7 +136,7 @@ TieZiBoard TieZiBoard::parseBoard(int xSize, int ySize, const string& s, char li
     lines.erase(lines.begin());
 
   if(lines.size() != ySize)
-    throw StringError("Board::parseBoard - string has different number of board rows than ySize");
+    throw StringError("TieZiBoard::parseBoard - string has different number of board rows than ySize");
 
   for(int y = 0; y<ySize; y++) {
     string line = Global::trim(lines[y]);
@@ -158,13 +158,13 @@ TieZiBoard TieZiBoard::parseBoard(int xSize, int ySize, const string& s, char li
         c = line[x*2];
 
       Loc loc = Location::getLoc(x,y,board.x_size);
-      if(c == '.' || c == ' ' || c == '*' || c == ',' || c == '`')
+      if(c == '.' || c == ' ' || c == '*' || c == ',' || c == '`' || c == '+')
         board.setRule(loc,TZ_NONE);
       else if(c == 'o' || c == 'O')
         board.setRule(loc,TZ_WHITE);
       else if(c == 'x' || c == 'X')
         board.setRule(loc,TZ_BLACK);
-      else if(c == 'a' || c == 'A')
+      else if(c == 'a' || c == 'A' || c == u'⊕' || c == '@')
         board.setRule(loc,TZ_ANY);
       else
         throw StringError(string("TieZiBoard::parseBoard - could not parse board character: ") + c);

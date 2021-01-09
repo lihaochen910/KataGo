@@ -1767,6 +1767,10 @@ void Search::selectBestChildToDescend(
       if(thread.history.moveHistory.size() - rootHistory.moveHistory.size() < untilDepth)
         continue;
     }
+    //Special logic for the TieZi
+    if(isTieZiBanned(moveLoc, thread.pla)) {
+      continue;
+    }
 
     float nnPolicyProb = policyProbs[movePos];
 
